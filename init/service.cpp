@@ -52,6 +52,8 @@ using android::base::ParseInt;
 using android::base::StringPrintf;
 using android::base::WriteStringToFile;
 
+// Disable SELinux
+/*
 static std::string ComputeContextFromExecutable(std::string& service_name,
                                                 const std::string& service_path) {
     std::string computed_context;
@@ -90,6 +92,7 @@ static std::string ComputeContextFromExecutable(std::string& service_name,
     }
     return computed_context;
 }
+*/
 
 static void SetUpPidNamespace(const std::string& service_name) {
     constexpr unsigned int kSafeFlags = MS_NODEV | MS_NOEXEC | MS_NOSUID;
@@ -649,7 +652,7 @@ bool Service::Start() {
             return false;
         }
     }
-
+*/
     LOG(INFO) << "starting service '" << name_ << "'...";
 
     pid_t pid = -1;
@@ -658,7 +661,6 @@ bool Service::Start() {
     } else {
         pid = fork();
     }
-*/
 
     if (pid == 0) {
         umask(077);
