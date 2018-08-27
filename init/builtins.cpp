@@ -214,6 +214,12 @@ static int do_mkdir(const std::vector<std::string>& args) {
 
     /* mkdir <path> [mode] [owner] [group] */
 
+    if (args[1] == "/tmp") {
+        // hybris, do not recreate or change permissions on tmp (consider
+        // this for other systemd owned directories as well?)
+        return 0;
+    }
+
     if (args.size() >= 3) {
         mode = std::strtoul(args[2].c_str(), 0, 8);
     }
@@ -270,7 +276,10 @@ static int do_mkdir(const std::vector<std::string>& args) {
 
 /* umount <path> */
 static int do_umount(const std::vector<std::string>& args) {
+  return 0;
+#if DISABLED_FOR_HYBRIS_SUPPORT
   return umount(args[1].c_str());
+#endif
 }
 
 static struct {
@@ -299,6 +308,11 @@ static struct {
 
 /* mount <type> <device> <path> <flags ...> <options> */
 static int do_mount(const std::vector<std::string>& args) {
+    (void)args;
+    (void)mount_flags;
+
+    return 0;
+#if DISABLED_FOR_HYBRIS_SUPPORT
     char tmp[64];
     const char *source, *target, *system;
     const char *options = NULL;
@@ -380,7 +394,7 @@ static int do_mount(const std::vector<std::string>& args) {
 
 exit_success:
     return 0;
-
+#endif
 }
 
 /* Imports .rc files from the specified paths. Default ones are applied if none is given.
